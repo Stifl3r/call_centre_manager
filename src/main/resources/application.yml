@@ -1,0 +1,7 @@
+info:
+  build:
+    name: call_centre_manager-api
+    version: 1.0.0
+
+server:
+  port: 8080
