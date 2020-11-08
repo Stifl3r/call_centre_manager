@@ -4,13 +4,12 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import za.co.ccm.call_centre_manager.api.controller.model.AgentDto;
 import za.co.ccm.call_centre_manager.api.controller.model.TeamDto;
+import za.co.ccm.call_centre_manager.api.controller.model.request.AgentRequest;
 import za.co.ccm.call_centre_manager.api.controller.model.response.AgentResponse;
+import za.co.ccm.call_centre_manager.api.exception.InvalidFieldException;
 import za.co.ccm.call_centre_manager.api.exception.NotFoundException;
 import za.co.ccm.call_centre_manager.api.service.AgentService;
 
@@ -46,5 +45,15 @@ public class AgentController {
     })
     public AgentDto getConsultationById(@PathVariable Long id) throws NotFoundException {
         return agentService.getAgentById(id);
+    }
+
+
+    @PostMapping()
+    @ApiOperation(value = "Create an agent")
+    @ApiResponses(value = {
+            @ApiResponse(code = HTTP_BAD_REQUEST, message = "Bad Request")
+    })
+    public void createAgent(@RequestBody AgentRequest request) throws InvalidFieldException {
+        agentService.createAnAgent(request);
     }
 }

@@ -6,7 +6,8 @@ import za.co.ccm.call_centre_manager.api.repository.entity.Agent;
 
 @Getter
 @Setter
-public class AgentResponse {private Long id;
+public class AgentResponse {
+    private Long id;
     private String firstname;
     private String lastname;
     private String idNumber;
