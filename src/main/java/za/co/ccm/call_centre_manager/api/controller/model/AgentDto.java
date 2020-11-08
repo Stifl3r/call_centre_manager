@@ -12,13 +12,13 @@ public class AgentDto {
     private String lastname;
     private String idNumber;
     private TeamDto team;
-    private ManagerDto manager;
+//    private ManagerDto manager;
 
     public AgentDto(Agent agent) {
         this.id = agent.getAgentId();
         this.firstname = agent.getFirstname();
         this.lastname = agent.getLastname();
         this.idNumber = agent.getIdNumber();
-//        this.team = new TeamDto(agent.getTeam());
+        this.team = new TeamDto(agent.getTeam());
     }
 }

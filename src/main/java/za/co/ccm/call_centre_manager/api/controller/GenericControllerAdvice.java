@@ -14,7 +14,8 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static za.co.ccm.call_centre_manager.api.controller.model.error.ApiErrorType.VALIDATION_ERROR;
 
 @ControllerAdvice(assignableTypes = {
-        TeamController.class
+        TeamController.class,
+        AgentController.class
 })
 public class GenericControllerAdvice {
 

@@ -18,8 +18,10 @@ public class Agent {
     private String firstname;
     private String lastname;
     private String idNumber;
-//    @OneToOne(mappedBy = "team")
-//    private Team team;
+//    @OneToOne(mappedBy = "Team") TODO Use correct mapping
+    @ManyToOne
+    @JoinColumn(name = "teamId", referencedColumnName = "teamId")
+    private Team team;
 //    @OneToOne(mappedBy = "manager")
 //    private Manager manager;
 
