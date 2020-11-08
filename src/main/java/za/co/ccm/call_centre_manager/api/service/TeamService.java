@@ -2,10 +2,12 @@ package za.co.ccm.call_centre_manager.api.service;
 
 import org.springframework.stereotype.Service;
 import za.co.ccm.call_centre_manager.api.controller.model.TeamDto;
+import za.co.ccm.call_centre_manager.api.controller.model.request.TeamRequest;
+import za.co.ccm.call_centre_manager.api.exception.InvalidFieldException;
 import za.co.ccm.call_centre_manager.api.exception.NotFoundException;
 import za.co.ccm.call_centre_manager.api.repository.TeamRepository;
+import za.co.ccm.call_centre_manager.api.repository.entity.Team;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,5 +29,15 @@ public class TeamService {
         var result = teamRepository.findById(id)
                 .orElseThrow(()-> new NotFoundException("Provided team id does not exist"));
         return new TeamDto(result);
+    }
+
+    public void createATeam(TeamRequest request) throws InvalidFieldException {
+        if (request.getName() == null || request.getName().isBlank()) {
+            throw new InvalidFieldException("Team name cannot be null or blank");
+        }
+
+        var team = new Team();
+        team.setName(request.getName());
+        teamRepository.save(team);
     }
 }

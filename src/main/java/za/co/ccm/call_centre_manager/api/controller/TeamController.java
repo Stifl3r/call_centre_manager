@@ -4,11 +4,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import za.co.ccm.call_centre_manager.api.controller.model.TeamDto;
+import za.co.ccm.call_centre_manager.api.controller.model.request.AgentRequest;
+import za.co.ccm.call_centre_manager.api.controller.model.request.TeamRequest;
+import za.co.ccm.call_centre_manager.api.exception.InvalidFieldException;
 import za.co.ccm.call_centre_manager.api.exception.NotFoundException;
 import za.co.ccm.call_centre_manager.api.service.TeamService;
 
@@ -44,5 +44,14 @@ public class TeamController {
     })
     public TeamDto getConsultationById(@PathVariable Long id) throws NotFoundException {
         return teamService.getTeamById(id);
+    }
+
+    @PostMapping()
+    @ApiOperation(value = "Create a team")
+    @ApiResponses(value = {
+            @ApiResponse(code = HTTP_BAD_REQUEST, message = "Bad Request")
+    })
+    public void createAgent(@RequestBody TeamRequest request) throws InvalidFieldException {
+        teamService.createATeam(request);
     }
 }
