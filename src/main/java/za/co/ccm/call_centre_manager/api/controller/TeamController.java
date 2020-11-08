@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import za.co.ccm.call_centre_manager.api.controller.model.TeamDto;
+import za.co.ccm.call_centre_manager.api.service.TeamService;
 
-import java.util.Collections;
 import java.util.List;
 
 import static java.net.HttpURLConnection.HTTP_INTERNAL_ERROR;
@@ -24,9 +24,14 @@ import static java.net.HttpURLConnection.HTTP_OK;
 })
 public class TeamController {
 
+    private final TeamService teamService;
+
+    public TeamController(TeamService teamService) {
+        this.teamService = teamService;
+    }
     @GetMapping()
     @ApiOperation(value = "Get list of teams")
     public List<TeamDto> getTeams()  {
-        return Collections.EMPTY_LIST;
+        return teamService.getAllTeams();
     }
 }
