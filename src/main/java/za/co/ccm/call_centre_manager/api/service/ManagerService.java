@@ -66,7 +66,7 @@ public class ManagerService {
 
         var managedTeams = teamManagerRepository.findAllByManager(manager);
         if (managedTeams.size() > 0) {
-            throw new InvalidFieldException("Cannot delete a manager that is assigned to a team")
+            throw new InvalidFieldException("Cannot delete a manager that is assigned to a team");
         }
 
         managerRepository.delete(manager);
