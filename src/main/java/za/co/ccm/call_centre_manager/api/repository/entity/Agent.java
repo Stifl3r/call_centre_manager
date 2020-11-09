@@ -22,7 +22,9 @@ public class Agent {
     @ManyToOne
     @JoinColumn(name = "teamId", referencedColumnName = "teamId")
     private Team team;
-//    @OneToOne(mappedBy = "manager")
-//    private Manager manager;
+
+    @ManyToOne
+    @JoinColumn(name = "managerId", referencedColumnName = "managerId")
+    private Manager manager;
 
 }

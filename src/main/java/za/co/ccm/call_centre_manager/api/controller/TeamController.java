@@ -5,10 +5,9 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.web.bind.annotation.*;
-import za.co.ccm.call_centre_manager.api.controller.model.AgentDto;
 import za.co.ccm.call_centre_manager.api.controller.model.TeamDto;
-import za.co.ccm.call_centre_manager.api.controller.model.request.AgentRequest;
-import za.co.ccm.call_centre_manager.api.controller.model.request.AgentTeamEdit;
+import za.co.ccm.call_centre_manager.api.controller.model.request.AgentToTeamEdit;
+import za.co.ccm.call_centre_manager.api.controller.model.request.ManagerToTeamEdit;
 import za.co.ccm.call_centre_manager.api.controller.model.request.TeamRequest;
 import za.co.ccm.call_centre_manager.api.exception.InvalidFieldException;
 import za.co.ccm.call_centre_manager.api.exception.NotFoundException;
@@ -60,9 +59,20 @@ public class TeamController {
     @PutMapping("/{id}/agent")
     @ApiOperation(value = "Assign agent to team")
     @ApiResponses(value = {
+            @ApiResponse(code = HTTP_BAD_REQUEST, message = "Bad Request"),
             @ApiResponse(code = HTTP_NOT_FOUND, message = "Not Found")
     })
-    public void getConsultationById(@PathVariable Long id, @RequestBody AgentTeamEdit edit) throws NotFoundException {
+    public void assignAgentToTeam(@PathVariable Long id, @RequestBody AgentToTeamEdit edit) throws NotFoundException, InvalidFieldException {
         teamService.assignAgentToTeam(id, edit);
+    }
+
+    @PutMapping("/{id}/manager")
+    @ApiOperation(value = "Assign manager to team")
+    @ApiResponses(value = {
+            @ApiResponse(code = HTTP_BAD_REQUEST, message = "Bad Request"),
+            @ApiResponse(code = HTTP_NOT_FOUND, message = "Not Found")
+    })
+    public void assignManagerToTeam(@PathVariable Long id, @RequestBody ManagerToTeamEdit edit) throws NotFoundException, InvalidFieldException {
+        teamService.assignManagerToTeam(id, edit);
     }
 }

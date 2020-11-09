@@ -3,7 +3,7 @@ package za.co.ccm.call_centre_manager.api.service;
 import org.springframework.stereotype.Service;
 import za.co.ccm.call_centre_manager.api.controller.model.AgentDto;
 import za.co.ccm.call_centre_manager.api.controller.model.request.AgentRequest;
-import za.co.ccm.call_centre_manager.api.controller.model.request.AgentTeamEdit;
+import za.co.ccm.call_centre_manager.api.controller.model.request.AgentToTeamEdit;
 import za.co.ccm.call_centre_manager.api.controller.model.response.AgentResponse;
 import za.co.ccm.call_centre_manager.api.exception.InvalidFieldException;
 import za.co.ccm.call_centre_manager.api.exception.NotFoundException;
@@ -27,10 +27,14 @@ public class AgentService {
         return agents.stream().map(AgentResponse::new).collect(Collectors.toList());
     }
 
-    public AgentDto getAgentById(Long id) throws NotFoundException {
+    public Agent getAgentEntityById(Long id) throws NotFoundException {
         var result = agentRepository.findById(id)
                 .orElseThrow(()-> new NotFoundException("Provided agent id does not exist"));
-        return new AgentDto(result);
+        return result;
+    }
+
+    public AgentDto getAgentById(Long id) throws NotFoundException {
+        return new AgentDto(getAgentEntityById(id));
     }
 
     public void createAnAgent(AgentRequest request) throws InvalidFieldException {
@@ -52,7 +56,7 @@ public class AgentService {
         agentRepository.save(agent);
     }
 
-    public void assignTeamToAgent(Team team, AgentTeamEdit edit) throws NotFoundException {
+    public void assignTeamToAgent(Team team, AgentToTeamEdit edit) throws NotFoundException {
         var agent = agentRepository.findById(edit.getId())
                 .orElseThrow(()-> new NotFoundException("Provided agent id does not exist"));
 
