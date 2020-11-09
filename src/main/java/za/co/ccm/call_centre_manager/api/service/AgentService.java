@@ -3,12 +3,14 @@ package za.co.ccm.call_centre_manager.api.service;
 import org.springframework.stereotype.Service;
 import za.co.ccm.call_centre_manager.api.controller.model.AgentDto;
 import za.co.ccm.call_centre_manager.api.controller.model.request.AgentRequest;
+import za.co.ccm.call_centre_manager.api.controller.model.request.AgentToManagerEdit;
 import za.co.ccm.call_centre_manager.api.controller.model.request.AgentToTeamEdit;
 import za.co.ccm.call_centre_manager.api.controller.model.response.AgentResponse;
 import za.co.ccm.call_centre_manager.api.exception.InvalidFieldException;
 import za.co.ccm.call_centre_manager.api.exception.NotFoundException;
 import za.co.ccm.call_centre_manager.api.repository.AgentRepository;
 import za.co.ccm.call_centre_manager.api.repository.entity.Agent;
+import za.co.ccm.call_centre_manager.api.repository.entity.Manager;
 import za.co.ccm.call_centre_manager.api.repository.entity.Team;
 
 import java.util.List;
@@ -57,10 +59,16 @@ public class AgentService {
     }
 
     public void assignTeamToAgent(Team team, AgentToTeamEdit edit) throws NotFoundException {
-        var agent = agentRepository.findById(edit.getId())
-                .orElseThrow(()-> new NotFoundException("Provided agent id does not exist"));
+        var agent = getAgentEntityById(edit.getAgentId());
 
         agent.setTeam(team);
+        agentRepository.save(agent);
+    }
+
+    public void assignManagerToAgent(Manager manager, AgentToManagerEdit edit) throws NotFoundException {
+        var agent = getAgentEntityById(edit.getAgentId());
+
+        agent.setManager(manager);
         agentRepository.save(agent);
     }
 }

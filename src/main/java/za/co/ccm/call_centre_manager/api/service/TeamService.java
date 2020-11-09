@@ -60,7 +60,7 @@ public class TeamService {
         var team = teamRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Provided team id does not exist"));
 
-        var agent = agentService.getAgentEntityById(edit.getId());
+        var agent = agentService.getAgentEntityById(edit.getAgentId());
         var teamManager = teamManagerRepository.findByManager(agent.getManager());
 
         if (teamManager.isEmpty()) {
