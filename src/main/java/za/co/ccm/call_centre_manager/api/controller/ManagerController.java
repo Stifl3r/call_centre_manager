@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.web.bind.annotation.*;
 import za.co.ccm.call_centre_manager.api.controller.model.request.AgentToManagerEdit;
+import za.co.ccm.call_centre_manager.api.controller.model.request.ManagerRequest;
 import za.co.ccm.call_centre_manager.api.controller.model.request.ManagerToTeamEdit;
 import za.co.ccm.call_centre_manager.api.exception.InvalidFieldException;
 import za.co.ccm.call_centre_manager.api.exception.NotFoundException;
@@ -37,5 +38,14 @@ public class ManagerController {
     })
     public void assignManagerToTeam(@PathVariable Long id, @RequestBody AgentToManagerEdit edit) throws NotFoundException, InvalidFieldException {
         managerService.assignAgentToManager(id, edit);
+    }
+
+    @PostMapping()
+    @ApiOperation(value = "Create new manager")
+    @ApiResponses(value = {
+            @ApiResponse(code = HTTP_BAD_REQUEST, message = "Bad Request")
+    })
+    public void createManager(ManagerRequest request) throws InvalidFieldException {
+        managerService.createManager(request);
     }
 }
