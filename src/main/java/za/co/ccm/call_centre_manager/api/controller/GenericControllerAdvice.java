@@ -8,14 +8,17 @@ import za.co.ccm.call_centre_manager.api.controller.model.error.ApiError;
 import za.co.ccm.call_centre_manager.api.controller.model.error.ApiErrorResponse;
 import za.co.ccm.call_centre_manager.api.exception.GenericException;
 
+import za.co.ccm.call_centre_manager.api.exception.InvalidFieldException;
 import za.co.ccm.call_centre_manager.api.exception.NotFoundException;
 
 import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static za.co.ccm.call_centre_manager.api.controller.model.error.ApiErrorType.NOT_FOUND_ERROR;
 import static za.co.ccm.call_centre_manager.api.controller.model.error.ApiErrorType.VALIDATION_ERROR;
 
 @ControllerAdvice(assignableTypes = {
         TeamController.class,
-        AgentController.class
+        AgentController.class,
+        ManagerController.class
 })
 public class GenericControllerAdvice {
 
@@ -25,6 +28,21 @@ public class GenericControllerAdvice {
     @ResponseBody
     @ResponseStatus(NOT_FOUND)
     private ApiErrorResponse handleNotFoundError(Exception e) {
+        Throwable cause = e.getCause();
+
+        var ipe = (GenericException) e;
+        if (hasUnderlyingCause(cause)) {
+            return new ApiErrorResponse(new ApiError(NOT_FOUND_ERROR, ipe.getErrorCode(), cause.getCause().getMessage(), null));
+        }
+        return new ApiErrorResponse(new ApiError(NOT_FOUND_ERROR, ipe.getErrorCode(),  e.getMessage(), null));
+    }
+
+    @ExceptionHandler({
+            InvalidFieldException.class
+    })
+    @ResponseBody
+    @ResponseStatus(NOT_FOUND)
+    private ApiErrorResponse handleBadRequestError(Exception e) {
         Throwable cause = e.getCause();
 
         var ipe = (GenericException) e;

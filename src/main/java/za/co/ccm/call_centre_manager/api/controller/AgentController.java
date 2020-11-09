@@ -55,7 +55,7 @@ public class AgentController {
     @ApiResponses(value = {
             @ApiResponse(code = HTTP_NOT_FOUND, message = "Not Found")
     })
-    public AgentDto getConsultationById(@PathVariable Long id) throws NotFoundException {
+    public AgentDto getAgentById(@PathVariable Long id) throws NotFoundException {
         return agentService.getAgentById(id);
     }
 
@@ -67,5 +67,14 @@ public class AgentController {
     })
     public void createAgent(@RequestBody AgentRequest request) throws InvalidFieldException {
         agentService.createAnAgent(request);
+    }
+
+    @DeleteMapping("/{id}")
+    @ApiOperation(value = "Delete agent by id")
+    @ApiResponses(value = {
+            @ApiResponse(code = HTTP_NOT_FOUND, message = "Not Found")
+    })
+    public void deleteAgentById(@PathVariable Long id) throws NotFoundException {
+        agentService.deleteAgent(id);
     }
 }

@@ -80,4 +80,9 @@ public class AgentService {
 
         return agents.map(AgentPage::new);
     }
+
+    public void deleteAgent(Long id) throws NotFoundException {
+        var agent = getAgentEntityById(id);
+        agentRepository.delete(agent);
+    }
 }
