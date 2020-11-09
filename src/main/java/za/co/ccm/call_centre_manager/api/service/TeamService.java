@@ -36,8 +36,8 @@ public class TeamService {
     }
 
     public List<TeamDto> getAllTeams() {
-        var teams = teamRepository.findAll();
-        return teams.stream().map(TeamDto::new).collect(Collectors.toList());
+        var teamsWithManagers = teamRepository.getTeamsWithManagers();
+        return teamsWithManagers.stream().map(TeamDto::mapEntityToDto).collect(Collectors.toList());
     }
 
     public List<TeamDto> getTeamsWithoutAgentsAndManagers() {

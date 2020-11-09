@@ -15,4 +15,9 @@ public interface TeamRepository extends JpaRepository<Team, Long> {
             "   and t.teamid not in (select a.teamid " +
             "                          from ccm.agent a) ", nativeQuery = true)
     List<Team> getTeamsWithoutAgentsAndManagers();
+
+    @Query("select distinct t " +
+            " from Team t " +
+            " left outer join t.managers tm ")
+    List<Team> getTeamsWithManagers();
 }

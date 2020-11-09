@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "Team")
@@ -16,4 +17,12 @@ public class Team {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long teamId;
     private String name;
+
+    @ManyToMany
+    @JoinTable(
+            name = "team_manager",
+            joinColumns = @JoinColumn(name = "teamid"),
+            inverseJoinColumns = @JoinColumn(name = "managerId")
+    )
+    private Set<Manager> managers;
 }
