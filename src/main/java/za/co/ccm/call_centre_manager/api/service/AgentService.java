@@ -85,4 +85,8 @@ public class AgentService {
         var agent = getAgentEntityById(id);
         agentRepository.delete(agent);
     }
+
+    public List<Agent> getAgentsForManager(Manager manager) {
+        return agentRepository.findAllByManager(manager);
+    }
 }

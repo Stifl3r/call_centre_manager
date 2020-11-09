@@ -48,4 +48,14 @@ public class ManagerController {
     public void createManager(ManagerRequest request) throws InvalidFieldException {
         managerService.createManager(request);
     }
+
+    @DeleteMapping("/{id}")
+    @ApiOperation(value = "Delete manager")
+    @ApiResponses(value = {
+            @ApiResponse(code = HTTP_BAD_REQUEST, message = "Bad Request"),
+            @ApiResponse(code = HTTP_NOT_FOUND, message = "Not Found")
+    })
+    public void deleteManager(@PathVariable Long id) throws InvalidFieldException, NotFoundException {
+        managerService.deleteManager(id);
+    }
 }

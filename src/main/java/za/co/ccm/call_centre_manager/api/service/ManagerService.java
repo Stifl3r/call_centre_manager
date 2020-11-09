@@ -6,6 +6,7 @@ import za.co.ccm.call_centre_manager.api.controller.model.request.ManagerRequest
 import za.co.ccm.call_centre_manager.api.exception.InvalidFieldException;
 import za.co.ccm.call_centre_manager.api.exception.NotFoundException;
 import za.co.ccm.call_centre_manager.api.repository.ManagerRepository;
+import za.co.ccm.call_centre_manager.api.repository.TeamManagerRepository;
 import za.co.ccm.call_centre_manager.api.repository.entity.Manager;
 
 @Service
@@ -13,16 +14,19 @@ public class ManagerService {
 
     private final ManagerRepository managerRepository;
     private final AgentService agentService;
+    private final TeamManagerRepository teamManagerRepository;
 
     public ManagerService(ManagerRepository managerRepository,
-                          AgentService agentService) {
+                          AgentService agentService,
+                          TeamManagerRepository teamManagerRepository) {
         this.managerRepository = managerRepository;
         this.agentService = agentService;
+        this.teamManagerRepository = teamManagerRepository;
     }
 
     public void assignAgentToManager(Long id, AgentToManagerEdit edit) throws NotFoundException {
         var manager = managerRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Provided team id does not exist"));
+                .orElseThrow(() -> new NotFoundException("Provided manager id does not exist"));
         agentService.assignManagerToAgent(manager, edit);
     }
 
@@ -49,5 +53,22 @@ public class ManagerService {
         manager.setIdNumber(request.getIdNumber());
 
         managerRepository.save(manager);
+    }
+
+    public void deleteManager(Long id) throws NotFoundException, InvalidFieldException {
+        var manager = managerRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Provided manager id does not exist"));
+
+        var managerAgents = agentService.getAgentsForManager(manager);
+        if (managerAgents.size() > 0) {
+            throw new InvalidFieldException("Cannot delete a manager with agents assigned");
+        }
+
+        var managedTeams = teamManagerRepository.findAllByManager(manager);
+        if (managedTeams.size() > 0) {
+            throw new InvalidFieldException("Cannot delete a manager that is assigned to a team")
+        }
+
+        managerRepository.delete(manager);
     }
 }
