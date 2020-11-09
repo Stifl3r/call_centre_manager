@@ -38,6 +38,12 @@ public class TeamController {
         return teamService.getAllTeams();
     }
 
+    @GetMapping("/unassigned")
+    @ApiOperation(value = "Get list of teams without Agents and managers")
+    public List<TeamDto> getTeamsWithoutAgentsAndManagers()  {
+        return teamService.getTeamsWithoutAgentsAndManagers();
+    }
+
     @GetMapping("/{id}")
     @ApiOperation(value = "Get team by id")
     @ApiResponses(value = {

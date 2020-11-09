@@ -40,6 +40,11 @@ public class TeamService {
         return teams.stream().map(TeamDto::new).collect(Collectors.toList());
     }
 
+    public List<TeamDto> getTeamsWithoutAgentsAndManagers() {
+        var teams = teamRepository.getTeamsWithoutAgentsAndManagers();
+        return teams.stream().map(TeamDto::new).collect(Collectors.toList());
+    }
+
     public TeamDto getTeamById(Long id) throws NotFoundException {
         var result = teamRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Provided team id does not exist"));
