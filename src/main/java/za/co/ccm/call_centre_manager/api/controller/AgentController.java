@@ -4,10 +4,14 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 import za.co.ccm.call_centre_manager.api.controller.model.AgentDto;
 import za.co.ccm.call_centre_manager.api.controller.model.TeamDto;
+import za.co.ccm.call_centre_manager.api.controller.model.request.AgentFilter;
 import za.co.ccm.call_centre_manager.api.controller.model.request.AgentRequest;
+import za.co.ccm.call_centre_manager.api.controller.model.response.AgentPage;
 import za.co.ccm.call_centre_manager.api.controller.model.response.AgentResponse;
 import za.co.ccm.call_centre_manager.api.exception.InvalidFieldException;
 import za.co.ccm.call_centre_manager.api.exception.NotFoundException;
@@ -16,6 +20,7 @@ import za.co.ccm.call_centre_manager.api.service.AgentService;
 import java.util.List;
 
 import static java.net.HttpURLConnection.*;
+import static org.springframework.data.domain.PageRequest.of;
 
 @Api(tags = {"Agents"})
 @RestController
@@ -36,6 +41,13 @@ public class AgentController {
     @ApiOperation(value = "Get list of agents")
     public List<AgentResponse> getAllAgents()  {
         return agentService.getAllAgents();
+    }
+
+    @GetMapping("/paginated")
+    @ApiOperation(value = "Get paginated list of agents")
+    public Page<AgentPage> getPaginatedAgents(AgentFilter filter)  {
+        var pageRequest = of(filter.getPageIndex(), filter.getPageSize());
+        return agentService.getPaginatedAgents(pageRequest);
     }
 
     @GetMapping("/{id}")

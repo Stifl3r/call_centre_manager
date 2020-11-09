@@ -1,10 +1,13 @@
 package za.co.ccm.call_centre_manager.api.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import za.co.ccm.call_centre_manager.api.controller.model.AgentDto;
 import za.co.ccm.call_centre_manager.api.controller.model.request.AgentRequest;
 import za.co.ccm.call_centre_manager.api.controller.model.request.AgentToManagerEdit;
 import za.co.ccm.call_centre_manager.api.controller.model.request.AgentToTeamEdit;
+import za.co.ccm.call_centre_manager.api.controller.model.response.AgentPage;
 import za.co.ccm.call_centre_manager.api.controller.model.response.AgentResponse;
 import za.co.ccm.call_centre_manager.api.exception.InvalidFieldException;
 import za.co.ccm.call_centre_manager.api.exception.NotFoundException;
@@ -70,5 +73,11 @@ public class AgentService {
 
         agent.setManager(manager);
         agentRepository.save(agent);
+    }
+
+    public Page<AgentPage> getPaginatedAgents(PageRequest pageRequest) {
+        var agents = agentRepository.findByFilter(pageRequest);
+
+        return agents.map(AgentPage::new);
     }
 }

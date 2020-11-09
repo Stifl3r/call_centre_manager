@@ -67,7 +67,7 @@ public class TeamService {
             throw new InvalidFieldException("Agent has no manager assigned and cannot be assigned to a team");
         }
 
-        if (teamManager.get().getTeam().getTeamId() != team.getTeamId()) {
+        if (!teamManager.get().getTeam().getTeamId().equals(team.getTeamId())) {
             throw new InvalidFieldException("Agent cannot be assigned to a team that os not managed by their manager");
         }
 
